@@ -16,34 +16,19 @@ class TriggerZone {
   isHit(o) {
     let oX = o.pos.x;
     let oY = o.pos.y;
-    let oRHalf = o.r / 2;
+    let oR = o.r;
 
-    // // If object is ROUGHLY in Y range
-    // if (oY > this.y && oY < this.y + this.h) {
-    //   // If object is in X range
-    //   if (
-    //     // Left side of ball hits trigger
-    //     (oX - oRHalf > this.x && oX - oRHalf < this.x + this.w) ||
-    //     // Right side of ball hits trigger
-    //     (oX + oRHalf > this.x && oX + oRHalf < this.x + this.w)
-    //   ) {
-    //     return true;
-    //   }
-    // }
-    // return false;
-
-    //TESTING
-    // If in Y
+    // If object is ROUGHLY in Y range
     if (oY > this.y && oY < this.y + this.h) {
-      // Left side of ball hits trigger
-      if (oX - oRHalf > this.x && oX - oRHalf < this.x + this.w) {
-        console.log('Left side of ball');
-        return true;
-      }
-
-      // Right side of ball hits trigger
-      if (oX + oRHalf > this.x && oX + oRHalf < this.x + this.w) {
-        console.log('Right side of ball');
+      // If object is in X range
+      if (
+        // Left side of ball hits trigger
+        (oX - oR > this.x && oX - oR < this.x + this.w) ||
+        // Right side of ball hits trigger
+        (oX + oR > this.x && oX + oR < this.x + this.w)
+      ) {
+        // this.lightUp();
+        this.note.play();
         return true;
       }
     }
@@ -51,4 +36,18 @@ class TriggerZone {
   }
 
   lightUp(color) {}
+
+  /* TESTING */
+  isClicked() {
+    if (
+      mouseX > this.x &&
+      mouseX < this.x + this.w &&
+      mouseY > this.y &&
+      mouseY < this.y + this.h
+    ) {
+      this.note.play();
+      return true;
+    }
+    return false;
+  }
 }
