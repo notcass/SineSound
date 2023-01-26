@@ -1,7 +1,7 @@
 class Ball {
-  constructor(_x, _y, _r, vx, vy) {
+  constructor(_x, _y, _r, _velVector) {
     this.pos = createVector(_x, _y);
-    this.vel = createVector(vx, vy);
+    this.vel = _velVector;
     this.r = _r;
     this.color = color(240);
   }

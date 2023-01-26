@@ -2,36 +2,44 @@
 /**
  *
  *  TODO:
- *    -Setup a way to load scales etc into trigger zones quickly
- *      Ex: let cScale = [0,2,4]
+ *    -Add more scales
  *
+ *    -TRIM SOUND FILES ?
+ *      Distortion seems to stack up after a while depending on spacing between hits?
+ *      Pausing the sketch for a sec fixes this temporarily
  *
  *
  *
  *
  */
 
-const balls = [];
+let balls = [];
 let trigs = [];
 const soundFiles = [];
 
 const SCALES = {
   // Indices of the notes in the soundFiles array
-  C_MAJ: [0, 2, 4, 5, 7, 9, 11],
-  D_MAJ: [2, 4, 6, 7, 9, 13, 14],
+  C_MAJ: [
+    0, 2, 4, 5, 7, 9, 11, 12, 14, 16, 17, 19, 21, 23, 24, 26, 28, 29, 31, 33,
+    35, 36,
+  ],
+
+  D_MAJ: [2, 4, 6, 7, 9, 11, 13, 14],
   E_MAJ: [4, 6, 8, 9, 11, 13, 15],
   F_MAJ: [5, 7, 9, 10, 12, 14, 16, 17],
+  CUSTOM: [0, 3, 6, 8],
 };
 
 function preload() {
-  for (let i = 40; i < 65; i++) {
+  for (let i = 40; i < 77; i++) {
     soundFiles.push(loadSound(`soundFiles/${i}.mp3`));
   }
 }
 
 function setup() {
   createCanvas(400, 400).parent('sketch-holder');
-  setupTriggers(12, 'C_MAJ');
+  // setupTriggers(8, 'C_MAJ', 150);
+  setupTriggers(10, 'CUSTOM', 150);
 }
 
 function draw() {
@@ -57,15 +65,25 @@ function handleTriggers() {
   });
 }
 
-function setupTriggers(count, scaleName) {
-  trigs = [];
-  const tWidth = 20;
-  const scaleIndices = SCALES[scaleName];
-  if (scaleIndices) {
-    // console.log('found me');
-    // console.log(scaleIndices);
+// Tweak values in here
+function setupBalls(count) {
+  balls = [];
+  let divider = height / count;
+  for (let i = 0; i < count; i++) {
+    let x = width / 2;
+    let y = divider * i + divider / 2;
+    let speed = createVector(1 + i / 10, 0);
+    let b = new Ball(x, y, 5, speed, speed);
+    balls.push(b);
+  }
+}
 
-    // If count is set too high, fix it
+function setupTriggers(count, scaleName, tWidth) {
+  trigs = [];
+  const scaleIndices = SCALES[scaleName];
+
+  if (scaleIndices) {
+    // If count is set too high fix it
     count = count <= scaleIndices.length ? count : scaleIndices.length;
     const divider = height / count;
 
@@ -82,6 +100,8 @@ function setupTriggers(count, scaleName) {
       t = new TriggerZone(x, y, tWidth, divider, soundFiles[index]);
       trigs.push(t);
     }
+    // Create balls
+    this.setupBalls(count);
   }
 }
 function keyPressed() {
