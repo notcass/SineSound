@@ -17,3 +17,18 @@ canvas {
   margin-top: 4%;
   position: relative;
 }
+
+#btn-Bar {
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+}
+
+.btn {
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+#btn-Bar > #usr-sequence {
+  margin-right: 5px;
+}

@@ -16,7 +16,16 @@
 let balls = [];
 let trigs = [];
 const soundFiles = [];
+const scaleButtons = [];
 
+//Move this function to bottom of file when done
+function setupUI() {
+  document.querySelectorAll('.btn').forEach((b) => {
+    b.addEventListener('click', (e) => {
+      console.log(b.id);
+    });
+  });
+}
 const SCALES = {
   // Indices of the notes in the soundFiles array
   C_MAJ: [
@@ -38,8 +47,10 @@ function preload() {
 
 function setup() {
   createCanvas(400, 400).parent('sketch-holder');
-  // setupTriggers(8, 'C_MAJ', 150);
-  setupTriggers(10, 'CUSTOM', 150);
+  setupUI();
+  setupTriggers(8, 'C_MAJ', 25);
+  // setupTriggers(10, 'CUSTOM', 150);
+  noLoop();
 }
 
 function draw() {
@@ -72,7 +83,7 @@ function setupBalls(count) {
   for (let i = 0; i < count; i++) {
     let x = width / 2;
     let y = divider * i + divider / 2;
-    let speed = createVector(1 + i / 10, 0);
+    let speed = createVector(1 + i / 5, 0);
     let b = new Ball(x, y, 5, speed, speed);
     balls.push(b);
   }
@@ -111,4 +122,22 @@ function keyPressed() {
 
 function mousePressed() {
   trigs.every((t) => !t.isClicked());
+}
+
+/**
+ *
+ * @param {Number} startNote the index for which note to start on. C4 = 0,
+ *                            See Onenote doc for visual aid of notes
+ */
+function genMajScale(startNote) {
+  let majorIntervals = [2, 2, 1, 2, 2, 2, 1];
+  let newScale = [];
+
+  let index = startNote;
+  for (let i = 0; i < 8; i++) {
+    newScale.push(index);
+    index += majorIntervals[i];
+  }
+  console.log(newScale);
+  return newScale;
 }
